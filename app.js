@@ -29,33 +29,34 @@ const matrix = [
     [01, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 01, 89, 19, 67, 48]
 ];
 
-// 1. Find the maximum
-function maxOfTwoNumbers(array) {
-    let maxNumber = 0;
-
-    for (let i = 0; i < array.length; i++) {
-        if (array[i] > maxNumber) {
-            maxNumber = array[i];
-        }
+// 1. Find the maximum of two numbers
+function maxOfTwoNumbers(num1, num2) {
+    if (num1 === num2) {
+        return 'Ambos números son iguales';
+    } else if (num1 >= num2) {
+        return num1;
+    } else {
+        return num2;
     }
-    return maxNumber;
 }
 
-console.log('1. The largest number is ' + maxOfTwoNumbers(numbers));
+console.log('1. The largest number is ' + maxOfTwoNumbers(3, 5));
 
 // 2. Find the longest word
-function findLongestWord(str) {
-    let longestWord = 0;
+function findLongestWord(array) {
+    let maxLength = 0;
+    let word = '';
 
-    for (let i = 0; i < str.length; i++) {
-        if (str[i].length > longestWord) {
-            longestWord = str[i].length;
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].length > maxLength) {
+            maxLength = array[i].length;
+            word = array[i];
         }
     }
-    return longestWord;
+    return word;
 }
 
-console.log('2. The longest word has ' + findLongestWord(words) + ' characters');
+console.log('2. The longest word is <' + findLongestWord(words) + '>');
 
 // 3. Calculate the sum
 function sumNumbers(array) {
@@ -104,7 +105,9 @@ function averageWordLength(array) {
     for (let i = 0; i < array.length; i++) {
         totalLength += array[i].length;
     }
-    return (totalLength / array.length).toFixed(2);
+
+    let avg = totalLength / array.length;
+    return avg.toFixed(2);
 }
 
 console.log('4.2. The average word length is ' + averageWordLength(words));
@@ -150,7 +153,64 @@ function howManyTimes(array, word) {
 
 console.log('7. Word frequency is ' + howManyTimes(rawArray, 'simple'));
 
-// Product of adjacent numbers
-function greatestProduct(matrix) {
+// 8. Greatest product of 4 adjacent numbers
+function greatestProduct(arr) {
+    let product = 0;
+    let maxProd = 0;
 
+    // rows
+    for (let i = 0; i < arr.length; i++) {
+        // columns
+        for (let j = 0; j < arr.length; j++) {
+            // horizontal
+            if ((j - 3) >= 0) {
+                product = arr[i][j] * arr[i][j - 1] * arr[i][j - 2] * arr[i][j - 3];
+                if (product > maxProd) maxProd = product;
+            }
+            // vertical
+            if ((i - 3) >= 0) {
+                product = arr[i][j] * arr[i - 1][j] * arr[i - 2][j] * arr[i - 3][j];
+                if (product > maxProd) maxProd = product;
+            }
+            // diagonal (down-right)
+            if ((i - 3) >= 0 && (j - 3) >= 0) {
+                product = arr[i][j] * arr[i - 1][j - 1] * arr[i - 2][j - 2] * arr[i - 3][j - 3];
+                if (product > maxProd) maxProd = product;
+            }
+            // diagonal (up-right)
+            if ((i - 3) >= 0 && (j + 3) >= 0) {
+                product = arr[i][j] * arr[i - 1][j + 1] * arr[i - 2][j + 2] * arr[i - 3][j + 3];
+                if (product > maxProd) maxProd = product;
+            }
+        }
+    }
+    return maxProd;
 }
+
+console.log('8. Greatest product of 4 adjacent numbers is ' + greatestProduct(matrix));
+
+// 8.1. Greatest product of 4 values layed out diagonally
+function greatestProductOfDiagonals(arr) {
+    let product = 0;
+    let maxProd = 0;
+
+    // rows
+    for (let i = 0; i < arr.length; i++) {
+        // columns
+        for (let j = 0; j < arr.length; j++) {
+            // diagonal (down-right)
+            if ((i - 3) >= 0 && (j - 3) >= 0) {
+                product = arr[i][j] * arr[i - 1][j - 1] * arr[i - 2][j - 2] * arr[i - 3][j - 3];
+                if (product > maxProd) maxProd = product;
+            }
+            // diagonal (up-right)
+            if ((i - 3) >= 0 && (j + 3) >= 0) {
+                product = arr[i][j] * arr[i - 1][j + 1] * arr[i - 2][j + 2] * arr[i - 3][j + 3];
+                if (product > maxProd) maxProd = product;
+            }
+        }
+    }
+    return maxProd;
+}
+
+console.log('8.1. Greatest product of 4 adjacent numbers layed out diagonally is ' + greatestProductOfDiagonals(matrix));
